@@ -17,6 +17,22 @@ Upload an image (e.g. clothing item), and the model returns the **4 most visuall
 
 ---
 
+### 🔧 CLIP Model
+
+We use OpenAI's `ViT-B/16` model to encode images into 512-dimensional feature vectors.
+
+```python
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+model, preprocess = clip.load("ViT-B/16", device = device)
+
+def encode(image):
+    img = preprocess(image).unsqueeze(0).to(device)
+    with torch.no_grad():
+        feature = model.encode_image(img)
+    return feature.cpu().numpy()[0]
+```
+---
+
 ## 🖼️ Demo Screenshots
 
 | Uploaded Image | 4 Similar Results |
@@ -39,9 +55,28 @@ Upload an image (e.g. clothing item), and the model returns the **4 most visuall
 
 ---
 
-## 📦 Installation
+📁 Dataset
+You can use any image dataset. This project used:
 
-```bash
-git clone https://github.com/your-username/clip-fashion-search.git
-cd clip-fashion-search
-pip install -r requirements.txt
+Kaggle: Fashion Product Images Dataset
+
+Preprocessed to size 224x224 and converted to .jpg
+
+---
+
+## 📷 Example Images
+If you want to test without setting up everything, upload any fashion-related image and see similar results!
+
+---
+
+## License
+This project is licensed under the MIT License.
+
+---
+
+## Credits
+OpenAI CLIP
+
+FAISS by Facebook AI
+
+Gradio
